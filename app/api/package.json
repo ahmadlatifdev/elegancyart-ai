@@ -1,7 +1,5 @@
-"scripts": {
-  "fix": "node smart-auto-fix-v3.js",
-  "dev": "npm run fix && next dev",
-  "build": "npm run fix && next build",
-  "start": "next start",
-  "lint": "next lint"
+{
+  "name": "elegancyart-ai-api",
+  "version": "1.0.0",
+  "private": true
 }
