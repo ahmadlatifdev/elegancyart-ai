@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import LuxuryDashboard from '@/components/LuxuryDashboard'
+import LuxuryDashboard from '../../components/LuxuryDashboard'
 
 export default function LuxuryPage() {
   return (
