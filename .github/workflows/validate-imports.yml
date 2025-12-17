@@ -1,0 +1,54 @@
+name: Validate Imports & Build
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate app/page.tsx imports
+        run: |
+          if grep -q "import.*from.*[\"'][^\"']*[\"']" ./app/page.tsx; then
+            echo "❌ app/page.tsx contains regular imports - must only re-export"
+            echo "Current content:"
+            cat ./app/page.tsx
+            exit 1
+          fi
+
+          if ! grep -q "export.*default.*from.*[\"']\./luxury/page[\"']" ./app/page.tsx; then
+            echo "❌ app/page.tsx must export default from './luxury/page'"
+            echo "Expected: export { default } from './luxury/page';"
+            exit 1
+          fi
+
+          echo "✅ app/page.tsx import pattern validated"
+
+      - name: TypeScript compile check
+        run: npx tsc --noEmit
+
+      - name: Build
+        run: npm run build
+
+      - name: Verify output
+        run: |
+          if [ ! -d "./out" ] && [ ! -d ".next" ]; then
+            echo "❌ Build output not found"
+            exit 1
+          fi
+          echo "✅ Build completed successfully"
