@@ -1,7 +1,13 @@
-// app/luxury/page.tsx
-import LuxuryDashboard from '@/components/BuilderViews/LuxuryDashboard';
+'use client'
+
+import React from 'react'
+import LuxuryDashboard from '@/components/LuxuryDashboard'
 
 export default function LuxuryPage() {
-  return <LuxuryDashboard />;
+  return (
+    <div className="w-full h-screen overflow-hidden">
+      <LuxuryDashboard />
+    </div>
+  )
 }
 
