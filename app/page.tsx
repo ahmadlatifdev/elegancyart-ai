@@ -1,1 +1,1 @@
-export { default } from "./bossmind/page";
+export { default } from "./luxury/page";
