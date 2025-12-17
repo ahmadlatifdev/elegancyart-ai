@@ -1,6 +1,8 @@
-import LuxuryDashboard from "@/components/BuilderViews/LuxuryDashboard";
+'use client';
+
+import BuilderPanel from '@/components/BuilderPanel';
 
 export default function LuxuryPage() {
-  return <LuxuryDashboard />;
+  return <BuilderPanel />;
 }
 
