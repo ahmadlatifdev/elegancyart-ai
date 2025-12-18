@@ -1,8 +1,7 @@
-'use client';
+"use client";
 
-import BuilderPanel from '@/components/BuilderPanel';
+import BuilderPanel from "../../components/BuilderPanel";
 
 export default function LuxuryPage() {
   return <BuilderPanel />;
 }
-
