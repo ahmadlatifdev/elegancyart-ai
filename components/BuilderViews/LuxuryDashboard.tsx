@@ -1,39 +1,22 @@
-// components/BuilderViews/LuxuryDashboard.tsx
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Sidebar from '../Sidebar';
-import Topbar from '../Topbar';
-import AIRecommendationPanel from './AIRecommendationPanel';
-import ProductPreviewPanel from './ProductPreviewPanel';
-import DesignThemeSelector from './DesignThemeSelector';
+import React from "react";
 
-const LuxuryDashboard = () => {
-  const [activePanel, setActivePanel] = useState<'recommendation' | 'preview' | 'themes'>('recommendation');
+import Sidebar from "@/components/LuxuryLayout/Sidebar";
+import Topbar from "@/components/LuxuryLayout/Topbar";
 
-  const renderPanel = () => {
-    switch (activePanel) {
-      case 'recommendation':
-        return <AIRecommendationPanel />;
-      case 'preview':
-        return <ProductPreviewPanel />;
-      case 'themes':
-        return <DesignThemeSelector />;
-      default:
-        return null;
-    }
-  };
+type LuxuryDashboardProps = {
+  children?: React.ReactNode;
+};
 
+export default function LuxuryDashboard({ children }: LuxuryDashboardProps) {
   return (
-    <div className="flex h-screen w-full bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white">
-      <Sidebar setActivePanel={setActivePanel} />
-      <div className="flex flex-col flex-grow">
+    <div className="min-h-screen w-full flex bg-black text-white">
+      <Sidebar />
+      <div className="flex-1 min-w-0 flex flex-col">
         <Topbar />
-        <div className="p-6 overflow-auto">{renderPanel()}</div>
+        <main className="flex-1 min-h-0 overflow-auto">{children}</main>
       </div>
     </div>
   );
-};
-
-export default LuxuryDashboard;
-
+}
