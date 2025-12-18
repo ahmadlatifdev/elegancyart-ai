@@ -1,12 +1,8 @@
-'use client';
-
-import AuthWrapper from './AuthWrapper';
-import BuilderPanel from './BuilderPanel';
-
 export default function LuxuryDashboard() {
   return (
-    <AuthWrapper>
-      <BuilderPanel />
-    </AuthWrapper>
+    <main style={{ padding: 24 }}>
+      <h1>LuxuryDashboard</h1>
+      <p>Build-safe placeholder created by BossMind Fix Mode.</p>
+    </main>
   );
 }
