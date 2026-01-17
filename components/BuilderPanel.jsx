@@ -5,6 +5,7 @@ import LuxuryDashboard from './BuilderViews/LuxuryDashboard';
 import AIRecommendationPanel from './BuilderViews/AIRecommendationPanel';
 import DesignThemeSelector from './BuilderViews/DesignThemeSelector';
 import ProductPreviewPanel from './BuilderViews/ProductPreviewPanel';
+import ProductSearchWizard from './ProductSearchWizard';
 
 const BuilderPanel: React.FC = () => {
   const [activePanel, setActivePanel] = useState('dashboard');
@@ -19,6 +20,8 @@ const BuilderPanel: React.FC = () => {
         return <DesignThemeSelector />;
       case 'preview':
         return <ProductPreviewPanel />;
+      case 'search':
+        return <ProductSearchWizard />;
       default:
         return <LuxuryDashboard />;
     }
@@ -31,6 +34,7 @@ const BuilderPanel: React.FC = () => {
         <button onClick={() => setActivePanel('recommendations')}>AI Recommendations</button>
         <button onClick={() => setActivePanel('themes')}>Theme Selector</button>
         <button onClick={() => setActivePanel('preview')}>Product Preview</button>
+        <button onClick={() => setActivePanel('search')}>Product Search</button>
       </div>
 
       <div className="flex-1 overflow-y-auto p-6 bg-gray-50 dark:bg-[#101010]">
