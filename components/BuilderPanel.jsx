@@ -1,47 +1,50 @@
 'use client';
 
-import React, { useState } from 'react';
-import LuxuryDashboard from './BuilderViews/LuxuryDashboard';
-import AIRecommendationPanel from './BuilderViews/AIRecommendationPanel';
-import DesignThemeSelector from './BuilderViews/DesignThemeSelector';
-import ProductPreviewPanel from './BuilderViews/ProductPreviewPanel';
-import ProductSearchWizard from './ProductSearchWizard';
+import React, { useEffect } from 'react';
 
-const BuilderPanel = () => {
-  const [activePanel, setActivePanel] = useState('dashboard');
+export default function BuilderPanel() {
+  // ✅ This component previously loaded legacy/old dashboards.
+  // ✅ Now it is hard-disabled to prevent the old UI from appearing anywhere.
 
-  const renderPanel = () => {
-    switch (activePanel) {
-      case 'dashboard':
-        return <LuxuryDashboard />;
-      case 'recommendations':
-        return <AIRecommendationPanel />;
-      case 'themes':
-        return <DesignThemeSelector />;
-      case 'preview':
-        return <ProductPreviewPanel />;
-      case 'search':
-        return <ProductSearchWizard />;
-      default:
-        return <LuxuryDashboard />;
-    }
-  };
+  useEffect(() => {
+    // Auto-redirect to the active dashboard
+    const t = setTimeout(() => {
+      window.location.href = 'https://ai.elegancyart.com';
+    }, 800);
+
+    return () => clearTimeout(t);
+  }, []);
 
   return (
-    <div className="flex flex-col w-full h-full">
-      <div className="flex gap-4 p-4 bg-gray-900 text-white justify-start flex-wrap">
-        <button onClick={() => setActivePanel('dashboard')}>Dashboard</button>
-        <button onClick={() => setActivePanel('recommendations')}>AI Recommendations</button>
-        <button onClick={() => setActivePanel('themes')}>Theme Selector</button>
-        <button onClick={() => setActivePanel('preview')}>Product Preview</button>
-        <button onClick={() => setActivePanel('search')}>Product Search</button>
-      </div>
+    <div className="min-h-screen w-full bg-black text-white flex items-center justify-center px-6">
+      <div className="max-w-xl w-full rounded-2xl border border-white/10 bg-white/5 p-6 shadow-xl">
+        <div className="text-xl font-semibold mb-2">This dashboard was removed</div>
 
-      <div className="flex-1 overflow-y-auto p-6 bg-gray-50 dark:bg-[#101010]">
-        {renderPanel()}
+        <p className="text-white/70 text-sm leading-relaxed">
+          The legacy dashboard is disabled to prevent old/incorrect pages from showing.
+          You are being redirected to the active ElegancyArt AI dashboard now.
+        </p>
+
+        <div className="mt-5 flex flex-col sm:flex-row gap-3">
+          <a
+            href="https://ai.elegancyart.com"
+            className="inline-flex items-center justify-center rounded-xl bg-yellow-500 px-4 py-2 text-black font-semibold hover:bg-yellow-400 transition"
+          >
+            Go to Active Dashboard (ai.elegancyart.com)
+          </a>
+
+          <button
+            onClick={() => (window.location.href = 'https://ai.elegancyart.com')}
+            className="inline-flex items-center justify-center rounded-xl border border-white/15 px-4 py-2 text-white hover:bg-white/10 transition"
+          >
+            Redirect Now
+          </button>
+        </div>
+
+        <div className="mt-4 text-xs text-white/50">
+          If you still see the old page after deploy, purge Cloudflare cache once.
+        </div>
       </div>
     </div>
   );
-};
-
-export default BuilderPanel;
+}
