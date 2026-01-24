@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { useState, useEffect } from 'react';
 
 export default function PrivateCustomerDashboard() {
@@ -14,7 +14,7 @@ export default function PrivateCustomerDashboard() {
     fetchCustomers();
   }, []);
 
-  const filteredCustomers = customers.filter((c: any) =>
+  const filteredCustomers = customers.filter((c) =>
     c.email.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -31,7 +31,7 @@ export default function PrivateCustomerDashboard() {
       />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {filteredCustomers.map((customer: any, idx) => (
+        {filteredCustomers.map((customer, idx) => (
           <div key={idx} className="border p-4 rounded-xl">
             <h3 className="font-semibold">{customer.name}</h3>
             <p><strong>Email:</strong> {customer.email}</p>
