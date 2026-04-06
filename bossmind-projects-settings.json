@@ -1,0 +1,32 @@
+{
+  "Resumora": {
+    "defaultEngine": "gpt",
+    "temperature": 0.7,
+    "maxTokens": 2000,
+    "systemPrompt": ""
+  },
+  "TikTok": {
+    "defaultEngine": "gpt",
+    "temperature": 0.7,
+    "maxTokens": 2000,
+    "systemPrompt": ""
+  },
+  "AI video Generator": {
+    "defaultEngine": "gpt",
+    "temperature": 0.7,
+    "maxTokens": 2000,
+    "systemPrompt": ""
+  },
+  "Elegancyart": {
+    "defaultEngine": "gpt",
+    "temperature": 0.7,
+    "maxTokens": 2000,
+    "systemPrompt": ""
+  },
+  "Global stock trade": {
+    "defaultEngine": "gpt",
+    "temperature": 0.7,
+    "maxTokens": 2000,
+    "systemPrompt": ""
+  }
+}

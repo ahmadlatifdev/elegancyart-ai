@@ -1,45 +1,49 @@
-import { recentOrders } from "@/lib/admin/resumora-data";
+import {
+  productionQueue,
+  type ProductionQueueItem,
+} from "../../lib/admin/resumora-data";
 
-export default function RecentOrdersTable() {
+export default function ProductionQueue() {
   return (
-    <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
-      <div className="mb-6">
-        <h2 className="text-2xl font-semibold text-white">Recent Orders</h2>
-        <p className="text-sm text-zinc-400 mt-1">
-          Latest resumora client requests
-        </p>
+    <div className="rounded-[30px] border border-white/10 bg-gradient-to-br from-[#17171c] via-[#111116] to-[#0a0a0e] p-6 shadow-[0_16px_50px_rgba(0,0,0,0.45)]">
+      <div className="mb-6 flex items-center justify-between">
+        <div>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-cyan-300/70">
+            Workflow
+          </p>
+          <h2 className="mt-2 text-2xl font-semibold text-white">
+            Production Queue
+          </h2>
+        </div>
+
+        <span className="rounded-full border border-cyan-300/20 bg-cyan-300/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-cyan-200">
+          Active
+        </span>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead className="text-zinc-400 border-b border-zinc-800">
-            <tr>
-              <th className="text-left py-3">Order</th>
-              <th className="text-left py-3">Client</th>
-              <th className="text-left py-3">Service</th>
-              <th className="text-left py-3">Status</th>
-              <th className="text-left py-3">Amount</th>
-              <th className="text-left py-3">Created</th>
-            </tr>
-          </thead>
+      <div className="space-y-4">
+        {productionQueue.map((item: ProductionQueueItem) => (
+          <div
+            key={item.id}
+            className="rounded-[22px] border border-white/10 bg-gradient-to-r from-white/[0.05] to-white/[0.02] p-5 transition duration-300 hover:border-cyan-300/30 hover:bg-white/[0.07]"
+          >
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <p className="text-[11px] uppercase tracking-[0.24em] text-white/35">
+                  {item.id}
+                </p>
+                <h3 className="mt-2 text-lg font-semibold text-white">
+                  {item.candidate}
+                </h3>
+                <p className="mt-1 text-sm text-white/55">{item.role}</p>
+              </div>
 
-          <tbody className="divide-y divide-zinc-800">
-            {recentOrders.map((order) => (
-              <tr key={order.id} className="hover:bg-zinc-800/40">
-                <td className="py-3 text-white">{order.id}</td>
-                <td className="py-3 text-zinc-300">{order.client}</td>
-                <td className="py-3 text-zinc-300">{order.service}</td>
-                <td className="py-3">
-                  <span className="px-3 py-1 text-xs rounded-full bg-zinc-800 text-zinc-300">
-                    {order.status}
-                  </span>
-                </td>
-                <td className="py-3 text-zinc-300">{order.amount}</td>
-                <td className="py-3 text-zinc-500">{order.createdAt}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+              <span className="rounded-full border border-cyan-400/25 bg-cyan-400/10 px-4 py-2 text-xs font-medium uppercase tracking-[0.24em] text-cyan-200">
+                {item.status}
+              </span>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

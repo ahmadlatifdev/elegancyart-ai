@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>BossMind Chat Launcher</title>
+</head>
+<body style="background:#000;color:#fff;font-family:Arial,sans-serif;padding:24px">
+  <h2>BossMind Chat Access</h2>
+
+  <button onclick="openResumoraDeepSeek()" style="padding:12px 18px;margin-right:10px;cursor:pointer;">
+    Open Resumora in DeepSeek
+  </button>
+
+  <button onclick="openResumoraGPT()" style="padding:12px 18px;cursor:pointer;">
+    Open Resumora in GPT
+  </button>
+
+  <script>
+    const resumoraMemory = {
+      project: "Resumora",
+      project_type: "AI resume platform",
+      current_admin_url: "http://localhost:3001/admin/resumora",
+      current_step: "Fix build and restore Control Commands",
+      last_confirmed_status: "Admin page route exists but updated controls are not yet visible",
+      next_required_action: "Continue build-error fixing and route verification"
+    };
+
+    function buildPrompt() {
+      return encodeURIComponent(
+`BOSSMIND MEMORY CORE
+
+${JSON.stringify(resumoraMemory, null, 2)}
+
+RULES:
+- Continue only this project
+- Do not switch projects
+- Use this memory as source of truth
+- Return directly to the current unfinished step`
+      );
+    }
+
+    function openResumoraDeepSeek() {
+      window.open("https://chat.deepseek.com/?prompt=" + buildPrompt(), "_blank");
+    }
+
+    function openResumoraGPT() {
+      window.open("https://chatgpt.com/?prompt=" + buildPrompt(), "_blank");
+    }
+  </script>
+</body>
+</html>
