@@ -3,13 +3,13 @@ export async function POST(req) {
     const body = await req.json();
     const { name, job, experience } = body;
 
-    const resume = 
-Name: 
+    const resume = `
+Name: ${name}
 
-Target Role: 
+Target Role: ${job}
 
 Professional Summary:
-Experienced professional with strong background in .
+Experienced professional with strong background in ${experience}.
 Highly motivated and results-driven with proven ability to deliver value.
 
 Skills:
@@ -19,8 +19,8 @@ Skills:
 - Time Management
 
 Experience:
-Worked in  with focus on performance, efficiency, and results.
-;
+Worked in ${experience} with focus on performance, efficiency, and results.
+`;
 
     return new Response(JSON.stringify({ success: true, resume }), {
       status: 200,
