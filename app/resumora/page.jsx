@@ -1,406 +1,155 @@
-"use client";
+import Link from "next/link";
+import Image from "next/image";
 
-import { useEffect, useMemo, useState } from "react";
-
-const content = {
-  en: {
-    back: "Back to Master Admin",
-    badge: "Resumora Premium",
-    title: "Luxury Resume Client Interface",
-    subtitle:
-      "Premium resume and career platform with advanced client-ready structure, clean onboarding, premium services, and modern 2026 visual language.",
-    login: "Client Login",
-    pricing: "View Pricing",
-    servicesTitle: "Premium Services",
-    actionsTitle: "Client Actions",
-    createResume: "Create Resume",
-    exploreServices: "Explore Services",
-    contactSupport: "Contact Support",
-    privacy: "Privacy",
-    featureCards: [
-      {
-        title: "ATS Resume",
-        text: "Professionally optimized resume structure prepared for modern applicant tracking systems."
-      },
-      {
-        title: "Cover Letter",
-        text: "Premium targeted cover letters aligned to role, industry, and employer profile."
-      },
-      {
-        title: "LinkedIn Optimization",
-        text: "Profile positioning, summary refinement, and recruiter-facing improvements."
-      },
-      {
-        title: "Executive Resume",
-        text: "Luxury executive presentation for leadership, director, and senior-level applications."
-      },
-      {
-        title: "Interview Preparation",
-        text: "Role-focused interview prep framework with premium coaching-ready structure."
-      },
-      {
-        title: "Priority Delivery",
-        text: "Accelerated delivery lane for urgent professional application needs."
-      }
-    ],
-    stats: [
-      { label: "Client Experience", value: "Premium" },
-      { label: "Language Mode", value: "EN / FR" },
-      { label: "Response Flow", value: "Active" }
-    ]
+const services = [
+  {
+    title: "ATS Resume",
+    description:
+      "Professionally optimized resume structure prepared for modern applicant tracking systems.",
+    href: "/resumora/services#ats-resume",
   },
-  fr: {
-    back: "Retour au tableau principal",
-    badge: "Resumora Premium",
-    title: "Interface Client CV de Luxe",
-    subtitle:
-      "Plateforme premium de CV et de carrière avec structure avancée prête pour les clients, intégration fluide, services premium et design moderne 2026.",
-    login: "Connexion Client",
-    pricing: "Voir les Tarifs",
-    servicesTitle: "Services Premium",
-    actionsTitle: "Actions Client",
-    createResume: "Créer un CV",
-    exploreServices: "Explorer les Services",
-    contactSupport: "Contacter le Support",
-    privacy: "Confidentialité",
-    featureCards: [
-      {
-        title: "CV ATS",
-        text: "Structure de CV optimisée professionnellement pour les systèmes modernes de suivi des candidatures."
-      },
-      {
-        title: "Lettre de Motivation",
-        text: "Lettres premium ciblées selon le poste, le secteur et le profil de l’employeur."
-      },
-      {
-        title: "Optimisation LinkedIn",
-        text: "Positionnement du profil, amélioration du résumé et optimisation orientée recruteurs."
-      },
-      {
-        title: "CV Exécutif",
-        text: "Présentation haut de gamme pour candidatures de direction et postes seniors."
-      },
-      {
-        title: "Préparation d’Entretien",
-        text: "Cadre de préparation ciblé selon le poste avec structure premium."
-      },
-      {
-        title: "Livraison Prioritaire",
-        text: "Voie accélérée pour les besoins urgents de candidature professionnelle."
-      }
-    ],
-    stats: [
-      { label: "Expérience Client", value: "Premium" },
-      { label: "Mode Langue", value: "EN / FR" },
-      { label: "Flux de Réponse", value: "Actif" }
-    ]
-  }
-};
+  {
+    title: "Cover Letter",
+    description:
+      "Premium targeted cover letters aligned to role, industry, and employer profile.",
+    href: "/resumora/services#cover-letter",
+  },
+  {
+    title: "LinkedIn Optimization",
+    description:
+      "Profile positioning, summary refinement, and recruiter-facing improvements.",
+    href: "/resumora/services#linkedin-optimization",
+  },
+  {
+    title: "Executive Resume",
+    description:
+      "Luxury executive presentation for leadership, director, and senior-level applications.",
+    href: "/resumora/services#executive-resume",
+  },
+  {
+    title: "Interview Preparation",
+    description:
+      "Role-focused interview preparation with structured coaching, question rehearsal, and answer refinement.",
+    href: "/resumora/services#interview-preparation",
+  },
+  {
+    title: "Priority Delivery",
+    description:
+      "Accelerated delivery service for urgent professional applications with prioritized turnaround handling.",
+    href: "/resumora/services#priority-delivery",
+  },
+];
+
+const actions = [
+  { title: "Create Resume", href: "/resumora/register" },
+  { title: "Explore Services", href: "/resumora/services" },
+  { title: "Contact Support", href: "/contact" },
+  { title: "Privacy", href: "/privacy" },
+];
 
 export default function ResumoraPage() {
-  const [lang, setLang] = useState("en");
-
-  useEffect(() => {
-    const saved = localStorage.getItem("resumora_lang");
-    if (saved === "en" || saved === "fr") setLang(saved);
-  }, []);
-
-  function switchLang(nextLang) {
-    setLang(nextLang);
-    localStorage.setItem("resumora_lang", nextLang);
-  }
-
-  const t = useMemo(() => content[lang], [lang]);
-
   return (
-    <div style={styles.page}>
-      <div style={styles.glowTop} />
-      <div style={styles.glowBottom} />
+    <main className="min-h-screen bg-[#020b1c] text-white">
+      <section className="border-b border-[#13213c] bg-[linear-gradient(180deg,#03112b_0%,#020b1c_100%)]">
+        <div className="mx-auto max-w-7xl px-6 py-6">
+          <div className="flex items-center justify-between gap-4">
+            <Link
+              href="/resumora"
+              className="flex items-center gap-3 rounded-xl border border-[#20345c] bg-[#07152c] px-4 py-3 transition hover:border-[#bfa14a]"
+              aria-label="Resumora Home"
+            >
+              <div className="relative h-11 w-11 overflow-hidden rounded-full border border-[#bfa14a] bg-[#0b1730]">
+                <Image
+                  src="/resumora-logo.png"
+                  alt="Resumora Logo"
+                  fill
+                  className="object-contain p-1"
+                  priority
+                />
+              </div>
+              <div className="leading-tight">
+                <div className="text-sm font-medium text-[#d6b45a]">Resumora</div>
+                <div className="text-xs text-[#9fb0d1]">Premium Career Platform</div>
+              </div>
+            </Link>
 
-      <header style={styles.header}>
-        <a href="/dashboard" style={styles.backLink}>
-          ← {t.back}
-        </a>
-
-        <div style={styles.langWrap}>
-          <button
-            type="button"
-            onClick={() => switchLang("en")}
-            style={lang === "en" ? styles.langButtonActive : styles.langButton}
-          >
-            EN
-          </button>
-          <button
-            type="button"
-            onClick={() => switchLang("fr")}
-            style={lang === "fr" ? styles.langButtonActive : styles.langButton}
-          >
-            FR
-          </button>
-        </div>
-      </header>
-
-      <section style={styles.hero}>
-        <div style={styles.badge}>{t.badge}</div>
-        <h1 style={styles.title}>{t.title}</h1>
-        <p style={styles.subtitle}>{t.subtitle}</p>
-
-        <div style={styles.heroButtons}>
-          <a href={`/login?lang=${lang}`} style={styles.primaryButton}>
-            {t.login}
-          </a>
-          <a href={`/pricing?lang=${lang}`} style={styles.secondaryButton}>
-            {t.pricing}
-          </a>
-        </div>
-
-        <div style={styles.statsGrid}>
-          {t.stats.map((item) => (
-            <div key={item.label} style={styles.statCard}>
-              <div style={styles.statLabel}>{item.label}</div>
-              <div style={styles.statValue}>{item.value}</div>
+            <div className="rounded-full border border-[#29406d] bg-[#07152c] px-4 py-2 text-sm font-semibold text-[#f4c84d]">
+              EN / FR
             </div>
-          ))}
+          </div>
+
+          <div className="mt-10 max-w-5xl">
+            <div className="mb-5 inline-flex rounded-full border border-[#6a5a1a] bg-[#0b1730] px-5 py-2 text-sm font-semibold text-[#f4c84d]">
+              Resumora Premium
+            </div>
+
+            <h1 className="text-4xl font-black tracking-tight text-white md:text-6xl">
+              Luxury Resume Client Interface
+            </h1>
+
+            <p className="mt-5 max-w-4xl text-lg leading-8 text-[#d1d8e8]">
+              Premium resume and career platform with advanced client-ready structure,
+              clean onboarding, premium services, and modern 2026 visual language.
+            </p>
+          </div>
         </div>
       </section>
 
-      <section style={styles.mainGrid}>
-        <div style={styles.panel}>
-          <h2 style={styles.panelTitle}>{t.servicesTitle}</h2>
-          <div style={styles.featureGrid}>
-            {t.featureCards.map((item) => (
-              <div key={item.title} style={styles.featureCard}>
-                <div style={styles.featureTitle}>{item.title}</div>
-                <div style={styles.featureText}>{item.text}</div>
-              </div>
+      <section className="mx-auto max-w-7xl px-6 py-8">
+        <div className="grid gap-5 md:grid-cols-3">
+          <div className="rounded-3xl border border-[#162746] bg-[#041128] p-6">
+            <div className="text-sm text-[#9fb0d1]">Client Experience</div>
+            <div className="mt-2 text-3xl font-bold text-[#ffd34f]">Premium</div>
+          </div>
+
+          <div className="rounded-3xl border border-[#162746] bg-[#041128] p-6">
+            <div className="text-sm text-[#9fb0d1]">Language Mode</div>
+            <div className="mt-2 text-3xl font-bold text-[#ffd34f]">EN / FR</div>
+          </div>
+
+          <div className="rounded-3xl border border-[#162746] bg-[#041128] p-6">
+            <div className="text-sm text-[#9fb0d1]">Response Flow</div>
+            <div className="mt-2 text-3xl font-bold text-[#ffd34f]">Active</div>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto grid max-w-7xl gap-6 px-6 pb-14 lg:grid-cols-[1.95fr_1fr]">
+        <div className="rounded-[32px] border border-[#162746] bg-[#020f24] p-6">
+          <h2 className="mb-6 text-3xl font-black">Premium Services</h2>
+
+          <div className="grid gap-5 md:grid-cols-2">
+            {services.map((service) => (
+              <Link
+                key={service.title}
+                href={service.href}
+                className="rounded-[24px] border border-[#182c4d] bg-[#06152e] p-6 transition hover:border-[#d1ab3c] hover:shadow-[0_0_0_1px_rgba(209,171,60,0.25)]"
+              >
+                <h3 className="text-2xl font-extrabold text-white">{service.title}</h3>
+                <p className="mt-3 text-base leading-7 text-[#d1d8e8]">
+                  {service.description}
+                </p>
+              </Link>
             ))}
           </div>
         </div>
 
-        <div style={styles.panel}>
-          <h2 style={styles.panelTitle}>{t.actionsTitle}</h2>
+        <div className="rounded-[32px] border border-[#162746] bg-[#020f24] p-6">
+          <h2 className="mb-6 text-3xl font-black">Client Actions</h2>
 
-          <div style={styles.actionsGrid}>
-            <a href={`/generate?lang=${lang}`} style={styles.actionCard}>
-              {t.createResume}
-            </a>
-            <a href={`/services?lang=${lang}`} style={styles.actionCard}>
-              {t.exploreServices}
-            </a>
-            <a href={`/contact?lang=${lang}`} style={styles.actionCard}>
-              {t.contactSupport}
-            </a>
-            <a href={`/privacy?lang=${lang}`} style={styles.actionCard}>
-              {t.privacy}
-            </a>
+          <div className="grid gap-4">
+            {actions.map((action) => (
+              <Link
+                key={action.title}
+                href={action.href}
+                className="rounded-[24px] border border-[#182c4d] bg-[#06152e] px-5 py-8 text-2xl font-extrabold transition hover:border-[#d1ab3c] hover:text-[#ffd34f]"
+              >
+                {action.title}
+              </Link>
+            ))}
           </div>
         </div>
       </section>
-    </div>
+    </main>
   );
 }
-
-const styles = {
-  page: {
-    minHeight: "100vh",
-    background: "linear-gradient(180deg, #06101f 0%, #071427 55%, #030712 100%)",
-    color: "#f8fafc",
-    fontFamily: 'Inter, Arial, sans-serif',
-    padding: "28px",
-    position: "relative",
-    overflow: "hidden"
-  },
-  glowTop: {
-    position: "absolute",
-    top: "-120px",
-    right: "-120px",
-    width: 360,
-    height: 360,
-    borderRadius: 999,
-    background: "rgba(255, 215, 0, 0.10)",
-    filter: "blur(80px)"
-  },
-  glowBottom: {
-    position: "absolute",
-    bottom: "-140px",
-    left: "-140px",
-    width: 380,
-    height: 380,
-    borderRadius: 999,
-    background: "rgba(59, 130, 246, 0.10)",
-    filter: "blur(90px)"
-  },
-  header: {
-    position: "relative",
-    zIndex: 1,
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 24,
-    gap: 16
-  },
-  backLink: {
-    color: "#FFD700",
-    textDecoration: "none",
-    fontWeight: 800
-  },
-  langWrap: {
-    display: "flex",
-    gap: 8
-  },
-  langButton: {
-    background: "rgba(15,23,42,0.8)",
-    color: "#fff",
-    border: "1px solid rgba(255,255,255,0.08)",
-    borderRadius: 10,
-    padding: "10px 14px",
-    fontWeight: 800,
-    cursor: "pointer"
-  },
-  langButtonActive: {
-    background: "linear-gradient(135deg,#FFD700,#c59b00)",
-    color: "#08111f",
-    border: "none",
-    borderRadius: 10,
-    padding: "10px 14px",
-    fontWeight: 900,
-    cursor: "pointer"
-  },
-  hero: {
-    position: "relative",
-    zIndex: 1,
-    background: "rgba(8, 15, 28, 0.82)",
-    border: "1px solid rgba(255,255,255,0.06)",
-    borderRadius: 28,
-    padding: 34,
-    boxShadow: "0 20px 60px rgba(0,0,0,0.25)"
-  },
-  badge: {
-    display: "inline-block",
-    background: "rgba(255, 215, 0, 0.12)",
-    color: "#FFD700",
-    border: "1px solid rgba(255,215,0,0.24)",
-    padding: "8px 14px",
-    borderRadius: 999,
-    fontSize: 12,
-    fontWeight: 900,
-    letterSpacing: 1
-  },
-  title: {
-    marginTop: 22,
-    marginBottom: 14,
-    fontSize: 56,
-    lineHeight: 1.05,
-    fontWeight: 900
-  },
-  subtitle: {
-    color: "#dbe5f1",
-    fontSize: 16,
-    lineHeight: 1.85,
-    maxWidth: 860,
-    marginBottom: 0
-  },
-  heroButtons: {
-    display: "flex",
-    gap: 14,
-    marginTop: 28,
-    flexWrap: "wrap"
-  },
-  primaryButton: {
-    textDecoration: "none",
-    background: "linear-gradient(135deg,#FFD700,#c59b00)",
-    color: "#08111f",
-    padding: "14px 22px",
-    borderRadius: 14,
-    fontWeight: 900
-  },
-  secondaryButton: {
-    textDecoration: "none",
-    background: "rgba(15,23,42,0.85)",
-    color: "#fff",
-    border: "1px solid rgba(255,255,255,0.08)",
-    padding: "14px 22px",
-    borderRadius: 14,
-    fontWeight: 900
-  },
-  statsGrid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
-    gap: 14,
-    marginTop: 28
-  },
-  statCard: {
-    background: "rgba(12, 22, 40, 0.88)",
-    border: "1px solid rgba(255,255,255,0.06)",
-    borderRadius: 18,
-    padding: 18
-  },
-  statLabel: {
-    fontSize: 13,
-    color: "#9fb0c7",
-    marginBottom: 8
-  },
-  statValue: {
-    fontSize: 20,
-    color: "#FFD700",
-    fontWeight: 900
-  },
-  mainGrid: {
-    position: "relative",
-    zIndex: 1,
-    display: "grid",
-    gridTemplateColumns: "1.2fr 0.8fr",
-    gap: 20,
-    marginTop: 22
-  },
-  panel: {
-    background: "rgba(8, 15, 28, 0.82)",
-    border: "1px solid rgba(255,255,255,0.06)",
-    borderRadius: 24,
-    padding: 24
-  },
-  panelTitle: {
-    margin: 0,
-    marginBottom: 18,
-    fontSize: 30,
-    fontWeight: 900
-  },
-  featureGrid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
-    gap: 14
-  },
-  featureCard: {
-    background: "rgba(12, 22, 40, 0.88)",
-    border: "1px solid rgba(255,255,255,0.05)",
-    borderRadius: 18,
-    padding: 18
-  },
-  featureTitle: {
-    fontSize: 18,
-    fontWeight: 900,
-    marginBottom: 10
-  },
-  featureText: {
-    fontSize: 14,
-    color: "#d5deea",
-    lineHeight: 1.75
-  },
-  actionsGrid: {
-    display: "grid",
-    gridTemplateColumns: "1fr 1fr",
-    gap: 14
-  },
-  actionCard: {
-    textDecoration: "none",
-    color: "#fff",
-    background: "rgba(12, 22, 40, 0.88)",
-    border: "1px solid rgba(255,255,255,0.06)",
-    borderRadius: 18,
-    padding: 20,
-    fontWeight: 800,
-    minHeight: 72,
-    display: "flex",
-    alignItems: "center"
-  }
-};
