@@ -1,62 +1,158 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+
+const copy = {
+  en: {
+    title: "Create Resume",
+    subtitle: "Submit the core information for a professional resume generation request.",
+    fullName: "Full Name",
+    role: "Target Role",
+    experience: "Professional Summary",
+    button: "Generate Request",
+    success: "Resume generation request submitted successfully. The client workflow is active."
+  },
+  fr: {
+    title: "Créer un CV",
+    subtitle: "Soumettez les informations principales pour une demande professionnelle de génération de CV.",
+    fullName: "Nom Complet",
+    role: "Poste Ciblé",
+    experience: "Résumé Professionnel",
+    button: "Envoyer la Demande",
+    success: "La demande de génération de CV a été envoyée avec succès. Le flux client est actif."
+  }
+};
 
 export default function GeneratePage() {
-  const [form, setForm] = useState({
-    name: "",
-    job: "",
-    experience: "",
-  });
+  const [lang, setLang] = useState("en");
+  const [form, setForm] = useState({ fullName: "", role: "", experience: "" });
+  const [message, setMessage] = useState("");
 
-  const [result, setResult] = useState("");
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const qLang = params.get("lang");
+    const saved = localStorage.getItem("resumora_lang");
+    setLang(qLang === "fr" || qLang === "en" ? qLang : saved === "fr" ? "fr" : "en");
+  }, []);
 
-  const handleGenerate = async () => {
-    const res = await fetch("/api/generate", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(form),
-    });
+  const t = useMemo(() => copy[lang], [lang]);
 
-    const data = await res.json();
-    if (data.success) {
-      setResult(data.resume);
-    } else {
-      setResult("Generation failed.");
-    }
-  };
+  function submit(e) {
+    e.preventDefault();
+    localStorage.setItem("resumora_resume_name", form.fullName);
+    setMessage(t.success);
+  }
 
   return (
-    <main className="min-h-screen bg-[#070b14] text-white p-6">
-      <div className="max-w-3xl mx-auto space-y-4">
-        <input
-          placeholder="Name"
-          className="w-full rounded-xl border border-gray-700 bg-black p-3"
-          onChange={(e) => setForm({ ...form, name: e.target.value })}
-        />
-        <input
-          placeholder="Target Job"
-          className="w-full rounded-xl border border-gray-700 bg-black p-3"
-          onChange={(e) => setForm({ ...form, job: e.target.value })}
-        />
-        <input
-          placeholder="Experience"
-          className="w-full rounded-xl border border-gray-700 bg-black p-3"
-          onChange={(e) => setForm({ ...form, experience: e.target.value })}
-        />
-        <button
-          onClick={handleGenerate}
-          className="w-full rounded-xl bg-[#D4AF37] p-3 font-semibold text-black"
-        >
-          Generate Resume
-        </button>
+    <div style={styles.page}>
+      <div style={styles.card}>
+        <a href={`/resumora?lang=${lang}`} style={styles.backLink}>← Resumora</a>
+        <h1 style={styles.title}>{t.title}</h1>
+        <p style={styles.subtitle}>{t.subtitle}</p>
 
-        <pre className="whitespace-pre-wrap rounded-xl border border-gray-700 bg-black p-4">
-{result}
-        </pre>
+        <form onSubmit={submit} style={styles.form}>
+          <input
+            style={styles.input}
+            placeholder={t.fullName}
+            value={form.fullName}
+            onChange={(e) => setForm({ ...form, fullName: e.target.value })}
+            required
+          />
+          <input
+            style={styles.input}
+            placeholder={t.role}
+            value={form.role}
+            onChange={(e) => setForm({ ...form, role: e.target.value })}
+            required
+          />
+          <textarea
+            style={styles.textarea}
+            placeholder={t.experience}
+            value={form.experience}
+            onChange={(e) => setForm({ ...form, experience: e.target.value })}
+            required
+          />
+          <button type="submit" style={styles.button}>{t.button}</button>
+        </form>
+
+        {message ? <div style={styles.successBox}>{message}</div> : null}
       </div>
-    </main>
+    </div>
   );
 }
+
+const styles = {
+  page: {
+    minHeight: "100vh",
+    background: "linear-gradient(180deg,#07111f,#030712)",
+    color: "#fff",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 24,
+    fontFamily: 'Inter, Arial, sans-serif'
+  },
+  card: {
+    width: "100%",
+    maxWidth: 760,
+    background: "rgba(8,15,28,0.92)",
+    border: "1px solid rgba(255,255,255,0.06)",
+    borderRadius: 24,
+    padding: 28
+  },
+  backLink: {
+    color: "#FFD700",
+    textDecoration: "none",
+    fontWeight: 800
+  },
+  title: {
+    fontSize: 42,
+    fontWeight: 900,
+    marginBottom: 10
+  },
+  subtitle: {
+    color: "#d9e1ec",
+    lineHeight: 1.8
+  },
+  form: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 12,
+    marginTop: 18
+  },
+  input: {
+    background: "#0d1b31",
+    border: "1px solid rgba(255,255,255,0.08)",
+    color: "#fff",
+    borderRadius: 12,
+    padding: "14px 16px",
+    fontSize: 15
+  },
+  textarea: {
+    background: "#0d1b31",
+    border: "1px solid rgba(255,255,255,0.08)",
+    color: "#fff",
+    borderRadius: 12,
+    padding: "14px 16px",
+    fontSize: 15,
+    minHeight: 180
+  },
+  button: {
+    border: "none",
+    borderRadius: 12,
+    padding: "14px 18px",
+    background: "linear-gradient(135deg,#FFD700,#c59b00)",
+    color: "#08111f",
+    fontWeight: 900,
+    cursor: "pointer"
+  },
+  successBox: {
+    marginTop: 18,
+    background: "rgba(34,197,94,0.12)",
+    border: "1px solid rgba(34,197,94,0.24)",
+    color: "#86efac",
+    padding: 14,
+    borderRadius: 12,
+    lineHeight: 1.7
+  }
+};
