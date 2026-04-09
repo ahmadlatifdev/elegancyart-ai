@@ -4,39 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
-type Lang = "en" | "fr";
-
-type ServiceItem = {
-  key: string;
-  title: {
-    en: string;
-    fr: string;
-  };
-  description: {
-    en: string;
-    fr: string;
-  };
-  href: string;
-  badge?: {
-    en: string;
-    fr: string;
-  };
-};
-
-type ActionItem = {
-  key: string;
-  title: {
-    en: string;
-    fr: string;
-  };
-  subtitle: {
-    en: string;
-    fr: string;
-  };
-  href: string;
-  variant?: "primary" | "secondary";
-};
-
 const CONTENT = {
   en: {
     premium: "Resumora Premium",
@@ -65,6 +32,8 @@ const CONTENT = {
     footerTitle: "Resumora",
     footerText:
       "Premium resume, cover letter, interview preparation, and priority delivery services.",
+    viewAll: "View All",
+    openService: "Open Service →",
   },
   fr: {
     premium: "Resumora Premium",
@@ -93,10 +62,12 @@ const CONTENT = {
     footerTitle: "Resumora",
     footerText:
       "Services premium de CV, lettre de motivation, préparation d’entretien et livraison prioritaire.",
+    viewAll: "Voir Tout",
+    openService: "Ouvrir le Service →",
   },
 };
 
-const SERVICES: ServiceItem[] = [
+const SERVICES = [
   {
     key: "ats",
     title: { en: "ATS Resume", fr: "CV ATS" },
@@ -156,7 +127,7 @@ const SERVICES: ServiceItem[] = [
   },
 ];
 
-const ACTIONS: ActionItem[] = [
+const ACTIONS = [
   {
     key: "create",
     title: { en: "Create Resume", fr: "Créer un CV" },
@@ -199,12 +170,12 @@ const ACTIONS: ActionItem[] = [
   },
 ];
 
-function cn(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
+function cn() {
+  return Array.from(arguments).filter(Boolean).join(" ");
 }
 
 export default function ResumoraPage() {
-  const [lang, setLang] = useState<Lang>("en");
+  const [lang, setLang] = useState("en");
   const t = useMemo(() => CONTENT[lang], [lang]);
 
   return (
@@ -348,7 +319,7 @@ export default function ResumoraPage() {
                 href="/resumora/services"
                 className="rounded-xl border border-[#21355d] bg-[#08162f] px-4 py-2 text-sm font-bold text-white transition hover:border-[#d4af37] hover:text-[#ffd34f]"
               >
-                {lang === "en" ? "View All" : "Voir Tout"}
+                {t.viewAll}
               </Link>
             </div>
 
@@ -376,7 +347,7 @@ export default function ResumoraPage() {
                   </p>
 
                   <div className="mt-5 text-sm font-bold text-[#f4c84d] transition group-hover:translate-x-1">
-                    {lang === "en" ? "Open Service →" : "Ouvrir le Service →"}
+                    {t.openService}
                   </div>
                 </Link>
               ))}
