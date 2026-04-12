@@ -14,11 +14,12 @@ const CONTENT = {
     activeValue: "Active",
     heroTitle: "Luxury Resume Client Interface",
     heroDescription:
-      "Premium resume and career platform with advanced client-ready structure, instant response behavior, refined onboarding, and a high-end 2026 client experience.",
+      "Premium resume and career platform with advanced client-ready structure, instant response behavior, refined onboarding, activated premium services, and a high-end 2026 client experience.",
     heroPrimary: "Create Resume",
     heroSecondary: "Explore Services",
     servicesTitle: "Premium Services",
     actionsTitle: "Client Actions",
+    pricingTitle: "Editing & Upgrade Plans",
     whyTitle: "Why Resumora",
     whyItems: [
       "Instant EN / FR switching",
@@ -31,9 +32,10 @@ const CONTENT = {
       "This interface is designed for clients only. No BossMind dashboard access links are exposed here.",
     footerTitle: "Resumora",
     footerText:
-      "Premium resume, cover letter, interview preparation, and priority delivery services.",
+      "Premium resume, cover letter, LinkedIn, interview preparation, edit, and priority delivery services.",
     viewAll: "View All",
     openService: "Open Service →",
+    choosePlan: "Choose Plan →",
   },
   fr: {
     premium: "Resumora Premium",
@@ -44,11 +46,12 @@ const CONTENT = {
     activeValue: "Actif",
     heroTitle: "Interface Client CV de Luxe",
     heroDescription:
-      "Plateforme premium de CV et de carrière avec structure avancée orientée client, réponse instantanée, intégration fluide et expérience haut de gamme 2026.",
+      "Plateforme premium de CV et de carrière avec structure avancée orientée client, réponse instantanée, intégration fluide, services premium activés et expérience haut de gamme 2026.",
     heroPrimary: "Créer un CV",
     heroSecondary: "Explorer les Services",
     servicesTitle: "Services Premium",
     actionsTitle: "Actions Client",
+    pricingTitle: "Plans d’Édition & Mise à Niveau",
     whyTitle: "Pourquoi Resumora",
     whyItems: [
       "Bascule instantanée EN / FR",
@@ -61,9 +64,10 @@ const CONTENT = {
       "Cette interface est conçue uniquement pour les clients. Aucun lien d’accès au tableau de bord BossMind n’est exposé ici.",
     footerTitle: "Resumora",
     footerText:
-      "Services premium de CV, lettre de motivation, préparation d’entretien et livraison prioritaire.",
+      "Services premium de CV, lettre de motivation, LinkedIn, préparation d’entretien, édition et livraison prioritaire.",
     viewAll: "Voir Tout",
     openService: "Ouvrir le Service →",
+    choosePlan: "Choisir le Plan →",
   },
 };
 
@@ -127,6 +131,42 @@ const SERVICES = [
   },
 ];
 
+const PRICING = [
+  {
+    key: "resume-edit",
+    icon: "📝",
+    title: { en: "Resume Edit", fr: "Édition de CV" },
+    price: "$89",
+    note: {
+      en: "1 Free Edit (up to 2 pages)",
+      fr: "1 Édition Gratuite (jusqu’à 2 pages)",
+    },
+    href: "/resumora/services#resume-edit",
+  },
+  {
+    key: "cover-edit",
+    icon: "✉️",
+    title: { en: "Cover Letter Edit", fr: "Édition de Lettre" },
+    price: "$29",
+    note: {
+      en: "1 Free Edit",
+      fr: "1 Édition Gratuite",
+    },
+    href: "/resumora/services#cover-letter-edit",
+  },
+  {
+    key: "package",
+    icon: "💎",
+    title: { en: "Package", fr: "Forfait" },
+    price: "$110",
+    note: {
+      en: "3 Free Edits",
+      fr: "3 Éditions Gratuites",
+    },
+    href: "/resumora/services#package",
+  },
+];
+
 const ACTIONS = [
   {
     key: "create",
@@ -142,8 +182,8 @@ const ACTIONS = [
     key: "services",
     title: { en: "Explore Services", fr: "Explorer les Services" },
     subtitle: {
-      en: "View all premium career services.",
-      fr: "Voir tous les services carrière premium.",
+      en: "View all premium career services and edit plans.",
+      fr: "Voir tous les services carrière premium et plans d’édition.",
     },
     href: "/resumora/services",
     variant: "secondary",
@@ -224,7 +264,6 @@ export default function ResumoraPage() {
                       ? "bg-[#d4af37] text-black"
                       : "bg-transparent text-white hover:bg-[#0f2448]"
                   )}
-                  aria-pressed={lang === "en"}
                 >
                   EN
                 </button>
@@ -237,7 +276,6 @@ export default function ResumoraPage() {
                       ? "bg-[#d4af37] text-black"
                       : "bg-transparent text-white hover:bg-[#0f2448]"
                   )}
-                  aria-pressed={lang === "fr"}
                 >
                   FR
                 </button>
@@ -402,6 +440,31 @@ export default function ResumoraPage() {
                 {t.trustText}
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-4 pb-10 sm:px-6 lg:px-8">
+        <div className="rounded-[28px] border border-[#162746] bg-[#020f24] p-5 sm:p-6">
+          <h2 className="mb-6 text-2xl font-black sm:text-3xl">{t.pricingTitle}</h2>
+
+          <div className="grid gap-5 md:grid-cols-3">
+            {PRICING.map((plan) => (
+              <Link
+                key={plan.key}
+                href={plan.href}
+                className="group rounded-[28px] border border-[#2b3f68] bg-[linear-gradient(180deg,#16294b_0%,#0b1833_100%)] p-6 text-center transition duration-200 hover:-translate-y-0.5 hover:border-[#d4af37]"
+              >
+                <div className="text-4xl">{plan.icon}</div>
+                <h3 className="mt-5 text-2xl font-black text-white">{plan.title[lang]}</h3>
+                <div className="mt-5 text-5xl font-black text-[#d4af37]">{plan.price}</div>
+                <div className="mt-5 text-base font-bold text-[#d4af37]">{plan.note[lang]}</div>
+
+                <div className="mt-6 inline-flex items-center justify-center rounded-full border border-[#d4af37] px-5 py-3 text-sm font-extrabold text-white transition group-hover:bg-[#d4af37] group-hover:text-black">
+                  {t.choosePlan}
+                </div>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
