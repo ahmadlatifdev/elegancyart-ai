@@ -1,10 +1,13 @@
-﻿/** @type {import('tailwindcss').Config} */
+﻿@'
+/** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: 'class',
   content: [
-    './pages/**/*.{js,ts,jsx,tsx}',
-    './components/**/*.{js,ts,jsx,tsx}',
+    "./app/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
   ],
-  theme: { extend: {} },
+  theme: {
+    extend: {},
+  },
   plugins: [],
-}
+};
+'@ | Out-File "D:\Shakhsy11\MY Plugins\Elegancyart avercel Migration\Elegancy-art\elegancyart-ai\tailwind.config.js" -Encoding utf8
