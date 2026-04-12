@@ -1,497 +1,768 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
-const CONTENT = {
+const content = {
   en: {
     premium: "Resumora Premium",
-    languageMode: "Language Mode",
-    clientExperience: "Client Experience",
-    responseFlow: "Response Flow",
+    title: "Luxury Resume Client Interface",
+    description:
+      "Premium resume and career platform with client-only access, bilingual interaction, premium services, free edit plans, and a refined 2026 luxury experience.",
+    primary: "Create Resume",
+    secondary: "Explore Services",
+    experience: "Client Experience",
+    language: "Language Mode",
+    response: "Response Flow",
     premiumValue: "Premium",
-    activeValue: "Active",
-    heroTitle: "Luxury Resume Client Interface",
-    heroDescription:
-      "Premium resume and career platform with advanced client-ready structure, instant response behavior, refined onboarding, activated premium services, and a high-end 2026 client experience.",
-    heroPrimary: "Create Resume",
-    heroSecondary: "Explore Services",
+    responseValue: "Active",
     servicesTitle: "Premium Services",
     actionsTitle: "Client Actions",
-    pricingTitle: "Editing & Upgrade Plans",
+    pricingTitle: "Edit & Upgrade Plans",
     whyTitle: "Why Resumora",
     whyItems: [
+      "Client-only interface with no BossMind admin exposure",
       "Instant EN / FR switching",
-      "Fast client-focused navigation",
-      "Responsive premium layout on desktop, tablet, and mobile",
-      "Direct service entry points without admin exposure",
+      "Premium resume, LinkedIn, interview, and delivery services",
+      "Responsive luxury layout for desktop, tablet, and mobile",
     ],
-    trustTitle: "Client-Only Experience",
-    trustText:
-      "This interface is designed for clients only. No BossMind dashboard access links are exposed here.",
-    footerTitle: "Resumora",
-    footerText:
-      "Premium resume, cover letter, LinkedIn, interview preparation, edit, and priority delivery services.",
+    choose: "Choose Plan",
+    open: "Open Service",
     viewAll: "View All",
-    openService: "Open Service →",
-    choosePlan: "Choose Plan →",
+    actionCreate: "Create Resume",
+    actionCreateText: "Start your client profile and resume request.",
+    actionServices: "Explore Services",
+    actionServicesText: "Browse all active premium services.",
+    actionSupport: "Contact Support",
+    actionSupportText: "Reach support directly.",
+    actionPrivacy: "Privacy",
+    actionPrivacyText: "Review client privacy and data policy.",
   },
   fr: {
     premium: "Resumora Premium",
-    languageMode: "Mode de Langue",
-    clientExperience: "Expérience Client",
-    responseFlow: "Flux de Réponse",
+    title: "Interface Client CV de Luxe",
+    description:
+      "Plateforme premium de CV et de carrière avec accès réservé aux clients, interaction bilingue, services premium, plans avec éditions gratuites et expérience luxe 2026.",
+    primary: "Créer un CV",
+    secondary: "Explorer les Services",
+    experience: "Expérience Client",
+    language: "Mode de Langue",
+    response: "Flux de Réponse",
     premiumValue: "Premium",
-    activeValue: "Actif",
-    heroTitle: "Interface Client CV de Luxe",
-    heroDescription:
-      "Plateforme premium de CV et de carrière avec structure avancée orientée client, réponse instantanée, intégration fluide, services premium activés et expérience haut de gamme 2026.",
-    heroPrimary: "Créer un CV",
-    heroSecondary: "Explorer les Services",
+    responseValue: "Actif",
     servicesTitle: "Services Premium",
     actionsTitle: "Actions Client",
     pricingTitle: "Plans d’Édition & Mise à Niveau",
     whyTitle: "Pourquoi Resumora",
     whyItems: [
+      "Interface réservée aux clients sans exposition admin BossMind",
       "Bascule instantanée EN / FR",
-      "Navigation rapide orientée client",
-      "Interface premium responsive sur ordinateur, tablette et mobile",
-      "Accès direct aux services sans exposition admin",
+      "Services premium CV, LinkedIn, entretien et livraison",
+      "Mise en page luxe responsive pour ordinateur, tablette et mobile",
     ],
-    trustTitle: "Expérience Réservée aux Clients",
-    trustText:
-      "Cette interface est conçue uniquement pour les clients. Aucun lien d’accès au tableau de bord BossMind n’est exposé ici.",
-    footerTitle: "Resumora",
-    footerText:
-      "Services premium de CV, lettre de motivation, LinkedIn, préparation d’entretien, édition et livraison prioritaire.",
+    choose: "Choisir le Plan",
+    open: "Ouvrir le Service",
     viewAll: "Voir Tout",
-    openService: "Ouvrir le Service →",
-    choosePlan: "Choisir le Plan →",
+    actionCreate: "Créer un CV",
+    actionCreateText: "Commencez votre profil client et votre demande de CV.",
+    actionServices: "Explorer les Services",
+    actionServicesText: "Voir tous les services premium actifs.",
+    actionSupport: "Contacter le Support",
+    actionSupportText: "Accéder directement au support.",
+    actionPrivacy: "Confidentialité",
+    actionPrivacyText: "Consulter la politique de confidentialité client.",
   },
 };
 
-const SERVICES = [
-  {
-    key: "ats",
-    title: { en: "ATS Resume", fr: "CV ATS" },
-    description: {
-      en: "Professionally optimized resume structure prepared for modern applicant tracking systems.",
-      fr: "Structure de CV optimisée professionnellement pour les systèmes modernes de suivi des candidatures.",
+const services = {
+  en: [
+    {
+      title: "ATS Resume",
+      text: "Professionally optimized resume structure prepared for modern applicant tracking systems.",
+      href: "/services#ats-resume",
+      badge: "Popular",
     },
-    href: "/resumora/services#ats-resume",
-    badge: { en: "Popular", fr: "Populaire" },
-  },
-  {
-    key: "cover",
-    title: { en: "Cover Letter", fr: "Lettre de Motivation" },
-    description: {
-      en: "Premium targeted cover letters aligned to role, industry, and employer profile.",
-      fr: "Lettres premium ciblées selon le poste, le secteur et le profil de l’employeur.",
+    {
+      title: "Cover Letter",
+      text: "Premium targeted cover letters aligned to role, industry, and employer profile.",
+      href: "/services#cover-letter",
+      badge: "",
     },
-    href: "/resumora/services#cover-letter",
-  },
-  {
-    key: "linkedin",
-    title: { en: "LinkedIn Optimization", fr: "Optimisation LinkedIn" },
-    description: {
-      en: "Profile positioning, summary refinement, and recruiter-facing improvements.",
-      fr: "Positionnement du profil, amélioration du résumé et optimisation orientée recruteurs.",
+    {
+      title: "LinkedIn Optimization",
+      text: "Profile positioning, summary refinement, and recruiter-facing improvements.",
+      href: "/services#linkedin-optimization",
+      badge: "",
     },
-    href: "/resumora/services#linkedin-optimization",
-  },
-  {
-    key: "executive",
-    title: { en: "Executive Resume", fr: "CV Exécutif" },
-    description: {
-      en: "Luxury executive presentation for leadership, director, and senior-level applications.",
-      fr: "Présentation haut de gamme pour candidatures de direction et postes seniors.",
+    {
+      title: "Executive Resume",
+      text: "Luxury executive presentation for leadership, director, and senior-level applications.",
+      href: "/services#executive-resume",
+      badge: "",
     },
-    href: "/resumora/services#executive-resume",
-  },
-  {
-    key: "interview",
-    title: { en: "Interview Preparation", fr: "Préparation d’Entretien" },
-    description: {
-      en: "Role-focused interview preparation with structured coaching, question rehearsal, and answer refinement.",
-      fr: "Préparation ciblée avec coaching structuré, répétition des questions et amélioration des réponses.",
+    {
+      title: "Interview Preparation",
+      text: "Role-focused interview coaching, question rehearsal, and answer refinement.",
+      href: "/services#interview-preparation",
+      badge: "Coaching",
     },
-    href: "/resumora/services#interview-preparation",
-    badge: { en: "Coaching", fr: "Coaching" },
-  },
-  {
-    key: "priority",
-    title: { en: "Priority Delivery", fr: "Livraison Prioritaire" },
-    description: {
-      en: "Accelerated delivery service for urgent professional applications with prioritized turnaround handling.",
-      fr: "Service accéléré pour candidatures urgentes avec traitement prioritaire des délais.",
+    {
+      title: "Priority Delivery",
+      text: "Accelerated delivery for urgent professional application needs.",
+      href: "/services#priority-delivery",
+      badge: "Fast Track",
     },
-    href: "/resumora/services#priority-delivery",
-    badge: { en: "Fast Track", fr: "Express" },
-  },
-];
+  ],
+  fr: [
+    {
+      title: "CV ATS",
+      text: "Structure de CV optimisée professionnellement pour les systèmes modernes de suivi des candidatures.",
+      href: "/services#ats-resume",
+      badge: "Populaire",
+    },
+    {
+      title: "Lettre de Motivation",
+      text: "Lettres premium ciblées selon le poste, le secteur et le profil de l’employeur.",
+      href: "/services#cover-letter",
+      badge: "",
+    },
+    {
+      title: "Optimisation LinkedIn",
+      text: "Positionnement du profil, amélioration du résumé et optimisation orientée recruteurs.",
+      href: "/services#linkedin-optimization",
+      badge: "",
+    },
+    {
+      title: "CV Exécutif",
+      text: "Présentation haut de gamme pour candidatures de direction et postes seniors.",
+      href: "/services#executive-resume",
+      badge: "",
+    },
+    {
+      title: "Préparation d’Entretien",
+      text: "Coaching ciblé, répétition des questions et amélioration des réponses.",
+      href: "/services#interview-preparation",
+      badge: "Coaching",
+    },
+    {
+      title: "Livraison Prioritaire",
+      text: "Livraison accélérée pour les besoins urgents de candidature professionnelle.",
+      href: "/services#priority-delivery",
+      badge: "Express",
+    },
+  ],
+};
 
-const PRICING = [
-  {
-    key: "resume-edit",
-    icon: "📝",
-    title: { en: "Resume Edit", fr: "Édition de CV" },
-    price: "$89",
-    note: {
-      en: "1 Free Edit (up to 2 pages)",
-      fr: "1 Édition Gratuite (jusqu’à 2 pages)",
+const pricing = {
+  en: [
+    {
+      title: "Resume Edit",
+      price: "$89",
+      note: "1 Free Edit (up to 2 pages)",
+      href: "/pricing#resume-edit",
+      icon: "📝",
     },
-    href: "/resumora/services#resume-edit",
-  },
-  {
-    key: "cover-edit",
-    icon: "✉️",
-    title: { en: "Cover Letter Edit", fr: "Édition de Lettre" },
-    price: "$29",
-    note: {
-      en: "1 Free Edit",
-      fr: "1 Édition Gratuite",
+    {
+      title: "Cover Letter Edit",
+      price: "$29",
+      note: "1 Free Edit",
+      href: "/pricing#cover-letter-edit",
+      icon: "✉️",
     },
-    href: "/resumora/services#cover-letter-edit",
-  },
-  {
-    key: "package",
-    icon: "💎",
-    title: { en: "Package", fr: "Forfait" },
-    price: "$110",
-    note: {
-      en: "3 Free Edits",
-      fr: "3 Éditions Gratuites",
+    {
+      title: "Package",
+      price: "$110",
+      note: "3 Free Edits",
+      href: "/pricing#package",
+      icon: "💎",
     },
-    href: "/resumora/services#package",
-  },
-];
-
-const ACTIONS = [
-  {
-    key: "create",
-    title: { en: "Create Resume", fr: "Créer un CV" },
-    subtitle: {
-      en: "Start your client profile and resume request.",
-      fr: "Commencez votre profil client et votre demande de CV.",
+  ],
+  fr: [
+    {
+      title: "Édition de CV",
+      price: "$89",
+      note: "1 Édition Gratuite (jusqu’à 2 pages)",
+      href: "/pricing#resume-edit",
+      icon: "📝",
     },
-    href: "/resumora/register",
-    variant: "primary",
-  },
-  {
-    key: "services",
-    title: { en: "Explore Services", fr: "Explorer les Services" },
-    subtitle: {
-      en: "View all premium career services and edit plans.",
-      fr: "Voir tous les services carrière premium et plans d’édition.",
+    {
+      title: "Édition de Lettre",
+      price: "$29",
+      note: "1 Édition Gratuite",
+      href: "/pricing#cover-letter-edit",
+      icon: "✉️",
     },
-    href: "/resumora/services",
-    variant: "secondary",
-  },
-  {
-    key: "support",
-    title: { en: "Contact Support", fr: "Contacter le Support" },
-    subtitle: {
-      en: "Reach client support quickly.",
-      fr: "Accéder rapidement au support client.",
+    {
+      title: "Forfait",
+      price: "$110",
+      note: "3 Éditions Gratuites",
+      href: "/pricing#package",
+      icon: "💎",
     },
-    href: "/contact",
-    variant: "secondary",
-  },
-  {
-    key: "privacy",
-    title: { en: "Privacy", fr: "Confidentialité" },
-    subtitle: {
-      en: "Review privacy and client data policy.",
-      fr: "Consulter la politique de confidentialité et des données client.",
-    },
-    href: "/privacy",
-    variant: "secondary",
-  },
-];
-
-function cn() {
-  return Array.from(arguments).filter(Boolean).join(" ");
-}
+  ],
+};
 
 export default function ResumoraPage() {
   const [lang, setLang] = useState("en");
-  const t = useMemo(() => CONTENT[lang], [lang]);
+  const t = useMemo(() => content[lang], [lang]);
+  const serviceList = services[lang];
+  const pricingList = pricing[lang];
 
   return (
-    <main className="min-h-screen bg-[#020b1c] text-white">
-      <section className="relative overflow-hidden border-b border-[#13213c] bg-[radial-gradient(circle_at_top_right,rgba(212,175,55,0.10),transparent_18%),linear-gradient(180deg,#03112b_0%,#020b1c_100%)]">
-        <div className="absolute inset-0 pointer-events-none opacity-30">
-          <div className="absolute -top-24 right-[-120px] h-72 w-72 rounded-full bg-[#d4af37]/10 blur-3xl" />
-          <div className="absolute bottom-[-120px] left-[-120px] h-72 w-72 rounded-full bg-[#2458b6]/10 blur-3xl" />
-        </div>
+    <>
+      <main className="res-wrap">
+        <section className="hero-shell">
+          <header className="topbar">
+            <Link href="/resumora" className="brand">
+              <img
+                src="/resumora-logo.png"
+                alt="Resumora Logo"
+                className="brand-logo"
+              />
+              <div className="brand-text">
+                <span className="brand-title">Resumora</span>
+                <span className="brand-sub">Premium Career Platform</span>
+              </div>
+            </Link>
 
-        <div className="relative mx-auto max-w-7xl px-4 py-5 sm:px-6 lg:px-8">
-          <div className="flex flex-col gap-6">
-            <div className="flex items-center justify-between gap-4">
-              <Link
-                href="/resumora"
-                className="group inline-flex max-w-full items-center gap-3 rounded-2xl border border-[#20345c] bg-[#07152c]/90 px-3 py-3 transition duration-200 hover:border-[#d4af37] hover:bg-[#091a36]"
-                aria-label="Resumora Home"
+            <div className="lang-switch">
+              <button
+                type="button"
+                className={lang === "en" ? "lang-btn active" : "lang-btn"}
+                onClick={() => setLang("en")}
               >
-                <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full border border-[#bfa14a] bg-[#0b1730]">
-                  <Image
-                    src="/resumora-logo.png"
-                    alt="Resumora Logo"
-                    fill
-                    className="object-contain p-1.5"
-                    priority
-                  />
-                </div>
+                EN
+              </button>
+              <button
+                type="button"
+                className={lang === "fr" ? "lang-btn active" : "lang-btn"}
+                onClick={() => setLang("fr")}
+              >
+                FR
+              </button>
+            </div>
+          </header>
 
-                <div className="min-w-0">
-                  <div className="truncate text-sm font-semibold tracking-wide text-[#d6b45a]">
-                    Resumora
-                  </div>
-                  <div className="truncate text-xs text-[#9fb0d1]">
-                    Premium Career Platform
-                  </div>
-                </div>
-              </Link>
+          <div className="hero-card">
+            <div className="hero-left">
+              <div className="premium-pill">{t.premium}</div>
+              <h1>{t.title}</h1>
+              <p>{t.description}</p>
 
-              <div className="flex items-center gap-2 rounded-2xl border border-[#20345c] bg-[#07152c]/90 p-1">
-                <button
-                  type="button"
-                  onClick={() => setLang("en")}
-                  className={cn(
-                    "rounded-xl px-3 py-2 text-sm font-bold transition",
-                    lang === "en"
-                      ? "bg-[#d4af37] text-black"
-                      : "bg-transparent text-white hover:bg-[#0f2448]"
-                  )}
-                >
-                  EN
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setLang("fr")}
-                  className={cn(
-                    "rounded-xl px-3 py-2 text-sm font-bold transition",
-                    lang === "fr"
-                      ? "bg-[#d4af37] text-black"
-                      : "bg-transparent text-white hover:bg-[#0f2448]"
-                  )}
-                >
-                  FR
-                </button>
+              <div className="hero-actions">
+                <Link href="/resumora/register" className="btn btn-primary">
+                  {t.primary}
+                </Link>
+                <Link href="/services" className="btn btn-secondary">
+                  {t.secondary}
+                </Link>
               </div>
             </div>
 
-            <div className="rounded-[28px] border border-[#162746] bg-[#031028]/90 p-6 sm:p-8 lg:p-10">
-              <div className="mb-5 inline-flex rounded-full border border-[#6a5a1a] bg-[#0b1730] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-[#f4c84d] sm:text-sm">
-                {t.premium}
+            <div className="hero-stats">
+              <div className="stat-card">
+                <span>{t.experience}</span>
+                <strong>{t.premiumValue}</strong>
               </div>
-
-              <div className="grid gap-8 lg:grid-cols-[1.3fr_0.7fr] lg:items-end">
-                <div>
-                  <h1 className="max-w-4xl text-4xl font-black leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
-                    {t.heroTitle}
-                  </h1>
-
-                  <p className="mt-5 max-w-3xl text-base leading-8 text-[#d1d8e8] sm:text-lg">
-                    {t.heroDescription}
-                  </p>
-
-                  <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                    <Link
-                      href="/resumora/register"
-                      className="inline-flex items-center justify-center rounded-2xl bg-[#d4af37] px-6 py-4 text-base font-extrabold text-black transition hover:scale-[1.01] hover:bg-[#e3bf4c]"
-                    >
-                      {t.heroPrimary}
-                    </Link>
-
-                    <Link
-                      href="/resumora/services"
-                      className="inline-flex items-center justify-center rounded-2xl border border-[#21355d] bg-[#08162f] px-6 py-4 text-base font-extrabold text-white transition hover:border-[#d4af37] hover:text-[#ffd34f]"
-                    >
-                      {t.heroSecondary}
-                    </Link>
-                  </div>
-                </div>
-
-                <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
-                  <div className="rounded-3xl border border-[#162746] bg-[#041128] p-5">
-                    <div className="text-xs uppercase tracking-[0.15em] text-[#9fb0d1]">
-                      {t.clientExperience}
-                    </div>
-                    <div className="mt-3 text-2xl font-black text-[#ffd34f]">
-                      {t.premiumValue}
-                    </div>
-                  </div>
-
-                  <div className="rounded-3xl border border-[#162746] bg-[#041128] p-5">
-                    <div className="text-xs uppercase tracking-[0.15em] text-[#9fb0d1]">
-                      {t.languageMode}
-                    </div>
-                    <div className="mt-3 text-2xl font-black text-[#ffd34f]">
-                      EN / FR
-                    </div>
-                  </div>
-
-                  <div className="rounded-3xl border border-[#162746] bg-[#041128] p-5">
-                    <div className="text-xs uppercase tracking-[0.15em] text-[#9fb0d1]">
-                      {t.responseFlow}
-                    </div>
-                    <div className="mt-3 text-2xl font-black text-[#ffd34f]">
-                      {t.activeValue}
-                    </div>
-                  </div>
-                </div>
+              <div className="stat-card">
+                <span>{t.language}</span>
+                <strong>EN / FR</strong>
+              </div>
+              <div className="stat-card">
+                <span>{t.response}</span>
+                <strong>{t.responseValue}</strong>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        <div className="grid gap-6 xl:grid-cols-[1.7fr_1fr]">
-          <div className="rounded-[28px] border border-[#162746] bg-[#020f24] p-5 sm:p-6">
-            <div className="mb-6 flex items-center justify-between gap-4">
-              <h2 className="text-2xl font-black sm:text-3xl">{t.servicesTitle}</h2>
-              <Link
-                href="/resumora/services"
-                className="rounded-xl border border-[#21355d] bg-[#08162f] px-4 py-2 text-sm font-bold text-white transition hover:border-[#d4af37] hover:text-[#ffd34f]"
-              >
+        <section className="grid-section">
+          <div className="panel large">
+            <div className="panel-head">
+              <h2>{t.servicesTitle}</h2>
+              <Link href="/services" className="mini-link">
                 {t.viewAll}
               </Link>
             </div>
 
-            <div className="grid gap-4 md:grid-cols-2">
-              {SERVICES.map((service) => (
-                <Link
-                  key={service.key}
-                  href={service.href}
-                  className="group rounded-[24px] border border-[#182c4d] bg-[#06152e] p-5 transition duration-200 hover:-translate-y-0.5 hover:border-[#d1ab3c] hover:shadow-[0_0_0_1px_rgba(209,171,60,0.25)]"
-                >
-                  <div className="flex items-start justify-between gap-3">
-                    <h3 className="text-xl font-extrabold text-white sm:text-2xl">
-                      {service.title[lang]}
-                    </h3>
-
-                    {service.badge ? (
-                      <span className="rounded-full border border-[#6a5a1a] bg-[#0b1730] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-[#f4c84d]">
-                        {service.badge[lang]}
-                      </span>
-                    ) : null}
+            <div className="service-grid">
+              {serviceList.map((item) => (
+                <Link href={item.href} key={item.title} className="service-card">
+                  <div className="card-head">
+                    <h3>{item.title}</h3>
+                    {item.badge ? <span className="badge">{item.badge}</span> : null}
                   </div>
-
-                  <p className="mt-3 text-sm leading-7 text-[#d1d8e8] sm:text-base">
-                    {service.description[lang]}
-                  </p>
-
-                  <div className="mt-5 text-sm font-bold text-[#f4c84d] transition group-hover:translate-x-1">
-                    {t.openService}
-                  </div>
+                  <p>{item.text}</p>
+                  <span className="open-link">{t.open} →</span>
                 </Link>
               ))}
             </div>
           </div>
 
-          <div className="grid gap-6">
-            <div className="rounded-[28px] border border-[#162746] bg-[#020f24] p-5 sm:p-6">
-              <h2 className="mb-5 text-2xl font-black sm:text-3xl">{t.actionsTitle}</h2>
+          <div className="side-stack">
+            <div className="panel">
+              <h2>{t.actionsTitle}</h2>
 
-              <div className="grid gap-4">
-                {ACTIONS.map((action) => (
-                  <Link
-                    key={action.key}
-                    href={action.href}
-                    className={cn(
-                      "rounded-[24px] border px-5 py-5 transition duration-200 hover:-translate-y-0.5",
-                      action.variant === "primary"
-                        ? "border-[#d4af37] bg-[#d4af37] text-black hover:bg-[#e3bf4c]"
-                        : "border-[#182c4d] bg-[#06152e] text-white hover:border-[#d1ab3c] hover:text-[#ffd34f]"
-                    )}
-                  >
-                    <div className="text-xl font-extrabold">{action.title[lang]}</div>
-                    <div
-                      className={cn(
-                        "mt-2 text-sm leading-6",
-                        action.variant === "primary" ? "text-black/80" : "text-[#cbd5e7]"
-                      )}
-                    >
-                      {action.subtitle[lang]}
-                    </div>
-                  </Link>
-                ))}
+              <div className="action-grid">
+                <Link href="/resumora/register" className="action-card primary">
+                  <strong>{t.actionCreate}</strong>
+                  <span>{t.actionCreateText}</span>
+                </Link>
+
+                <Link href="/services" className="action-card">
+                  <strong>{t.actionServices}</strong>
+                  <span>{t.actionServicesText}</span>
+                </Link>
+
+                <Link href="/contact" className="action-card">
+                  <strong>{t.actionSupport}</strong>
+                  <span>{t.actionSupportText}</span>
+                </Link>
+
+                <Link href="/privacy" className="action-card">
+                  <strong>{t.actionPrivacy}</strong>
+                  <span>{t.actionPrivacyText}</span>
+                </Link>
               </div>
             </div>
 
-            <div className="rounded-[28px] border border-[#162746] bg-[#041128] p-5 sm:p-6">
-              <h3 className="text-xl font-black">{t.whyTitle}</h3>
-              <ul className="mt-4 space-y-3 text-sm leading-7 text-[#d1d8e8] sm:text-base">
+            <div className="panel">
+              <h2>{t.whyTitle}</h2>
+              <ul className="why-list">
                 {t.whyItems.map((item) => (
-                  <li key={item} className="flex items-start gap-3">
-                    <span className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-[#d4af37]" />
-                    <span>{item}</span>
-                  </li>
+                  <li key={item}>{item}</li>
                 ))}
               </ul>
             </div>
-
-            <div className="rounded-[28px] border border-[#162746] bg-[#041128] p-5 sm:p-6">
-              <h3 className="text-xl font-black">{t.trustTitle}</h3>
-              <p className="mt-3 text-sm leading-7 text-[#d1d8e8] sm:text-base">
-                {t.trustText}
-              </p>
-            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="mx-auto max-w-7xl px-4 pb-10 sm:px-6 lg:px-8">
-        <div className="rounded-[28px] border border-[#162746] bg-[#020f24] p-5 sm:p-6">
-          <h2 className="mb-6 text-2xl font-black sm:text-3xl">{t.pricingTitle}</h2>
+        <section className="panel pricing-panel">
+          <h2>{t.pricingTitle}</h2>
 
-          <div className="grid gap-5 md:grid-cols-3">
-            {PRICING.map((plan) => (
-              <Link
-                key={plan.key}
-                href={plan.href}
-                className="group rounded-[28px] border border-[#2b3f68] bg-[linear-gradient(180deg,#16294b_0%,#0b1833_100%)] p-6 text-center transition duration-200 hover:-translate-y-0.5 hover:border-[#d4af37]"
-              >
-                <div className="text-4xl">{plan.icon}</div>
-                <h3 className="mt-5 text-2xl font-black text-white">{plan.title[lang]}</h3>
-                <div className="mt-5 text-5xl font-black text-[#d4af37]">{plan.price}</div>
-                <div className="mt-5 text-base font-bold text-[#d4af37]">{plan.note[lang]}</div>
-
-                <div className="mt-6 inline-flex items-center justify-center rounded-full border border-[#d4af37] px-5 py-3 text-sm font-extrabold text-white transition group-hover:bg-[#d4af37] group-hover:text-black">
-                  {t.choosePlan}
-                </div>
+          <div className="pricing-grid">
+            {pricingList.map((item) => (
+              <Link href={item.href} key={item.title} className="price-card">
+                <div className="price-icon">{item.icon}</div>
+                <h3>{item.title}</h3>
+                <div className="price">{item.price}</div>
+                <p>{item.note}</p>
+                <span className="btn btn-outline">{t.choose}</span>
               </Link>
             ))}
           </div>
-        </div>
-      </section>
+        </section>
+      </main>
 
-      <footer className="border-t border-[#13213c] bg-[#020b1c]">
-        <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-8 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
-          <Link
-            href="/resumora"
-            className="inline-flex items-center gap-3 rounded-2xl border border-[#20345c] bg-[#07152c]/90 px-4 py-3 transition hover:border-[#d4af37]"
-          >
-            <div className="relative h-10 w-10 overflow-hidden rounded-full border border-[#bfa14a] bg-[#0b1730]">
-              <Image
-                src="/resumora-logo.png"
-                alt="Resumora Logo"
-                fill
-                className="object-contain p-1"
-              />
-            </div>
-            <div>
-              <div className="text-sm font-bold text-[#d6b45a]">{t.footerTitle}</div>
-              <div className="text-xs text-[#9fb0d1]">Premium Career Platform</div>
-            </div>
-          </Link>
+      <style jsx global>{`
+        * {
+          box-sizing: border-box;
+        }
 
-          <div className="max-w-2xl text-sm leading-7 text-[#9fb0d1]">{t.footerText}</div>
-        </div>
-      </footer>
-    </main>
+        html,
+        body {
+          margin: 0;
+          padding: 0;
+          background: #020b1c;
+          color: #ffffff;
+          font-family: Arial, Helvetica, sans-serif;
+        }
+
+        a {
+          text-decoration: none;
+          color: inherit;
+        }
+
+        .res-wrap {
+          min-height: 100vh;
+          background:
+            radial-gradient(circle at top right, rgba(212, 175, 55, 0.12), transparent 18%),
+            linear-gradient(180deg, #03112b 0%, #020b1c 100%);
+          padding: 28px;
+        }
+
+        .hero-shell,
+        .grid-section,
+        .pricing-panel {
+          max-width: 1400px;
+          margin: 0 auto;
+        }
+
+        .topbar {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 20px;
+          margin-bottom: 24px;
+        }
+
+        .brand {
+          display: inline-flex;
+          align-items: center;
+          gap: 14px;
+          padding: 14px 18px;
+          border: 1px solid #243b66;
+          background: rgba(7, 21, 44, 0.92);
+          border-radius: 18px;
+        }
+
+        .brand-logo {
+          width: 54px;
+          height: 54px;
+          object-fit: contain;
+          border-radius: 50%;
+          background: #0b1730;
+          border: 1px solid #bfa14a;
+          padding: 4px;
+        }
+
+        .brand-text {
+          display: flex;
+          flex-direction: column;
+          line-height: 1.2;
+        }
+
+        .brand-title {
+          color: #d6b45a;
+          font-weight: 800;
+          font-size: 16px;
+        }
+
+        .brand-sub {
+          color: #9fb0d1;
+          font-size: 12px;
+        }
+
+        .lang-switch {
+          display: flex;
+          gap: 8px;
+          padding: 6px;
+          border: 1px solid #243b66;
+          background: rgba(7, 21, 44, 0.92);
+          border-radius: 16px;
+        }
+
+        .lang-btn {
+          border: 0;
+          cursor: pointer;
+          background: transparent;
+          color: #fff;
+          padding: 10px 14px;
+          border-radius: 12px;
+          font-weight: 800;
+        }
+
+        .lang-btn.active {
+          background: #d4af37;
+          color: #000;
+        }
+
+        .hero-card,
+        .panel {
+          border: 1px solid #162746;
+          background: rgba(2, 15, 36, 0.95);
+          border-radius: 28px;
+          padding: 28px;
+        }
+
+        .hero-card {
+          display: grid;
+          grid-template-columns: 1.35fr 0.75fr;
+          gap: 28px;
+        }
+
+        .premium-pill {
+          display: inline-flex;
+          padding: 10px 16px;
+          border-radius: 999px;
+          border: 1px solid #6a5a1a;
+          background: #0b1730;
+          color: #f4c84d;
+          font-weight: 800;
+          font-size: 12px;
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
+        }
+
+        .hero-left h1 {
+          margin: 18px 0 14px;
+          font-size: 64px;
+          line-height: 1.02;
+          font-weight: 900;
+        }
+
+        .hero-left p {
+          margin: 0;
+          color: #d1d8e8;
+          font-size: 20px;
+          line-height: 1.8;
+          max-width: 900px;
+        }
+
+        .hero-actions {
+          display: flex;
+          gap: 14px;
+          margin-top: 28px;
+          flex-wrap: wrap;
+        }
+
+        .btn {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 16px 24px;
+          border-radius: 18px;
+          font-weight: 900;
+        }
+
+        .btn-primary {
+          background: #d4af37;
+          color: #000;
+        }
+
+        .btn-secondary,
+        .btn-outline {
+          border: 1px solid #2b436f;
+          background: #08162f;
+          color: #fff;
+        }
+
+        .hero-stats {
+          display: grid;
+          gap: 16px;
+        }
+
+        .stat-card {
+          border: 1px solid #162746;
+          background: #041128;
+          border-radius: 24px;
+          padding: 20px;
+        }
+
+        .stat-card span {
+          display: block;
+          color: #9fb0d1;
+          font-size: 13px;
+          margin-bottom: 10px;
+        }
+
+        .stat-card strong {
+          display: block;
+          color: #ffd34f;
+          font-size: 34px;
+          font-weight: 900;
+        }
+
+        .grid-section {
+          display: grid;
+          grid-template-columns: 1.7fr 1fr;
+          gap: 24px;
+          margin-top: 24px;
+        }
+
+        .panel.large {
+          min-width: 0;
+        }
+
+        .side-stack {
+          display: grid;
+          gap: 24px;
+        }
+
+        .panel-head {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 12px;
+          margin-bottom: 18px;
+        }
+
+        .panel h2 {
+          margin: 0 0 18px;
+          font-size: 42px;
+          font-weight: 900;
+        }
+
+        .mini-link {
+          color: #ffd34f;
+          font-weight: 800;
+        }
+
+        .service-grid,
+        .action-grid,
+        .pricing-grid {
+          display: grid;
+          gap: 18px;
+        }
+
+        .service-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .action-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .pricing-grid {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .service-card,
+        .action-card,
+        .price-card {
+          border: 1px solid #1b2f50;
+          background: #06152e;
+          border-radius: 24px;
+          padding: 22px;
+          transition: 0.2s ease;
+        }
+
+        .service-card:hover,
+        .action-card:hover,
+        .price-card:hover {
+          transform: translateY(-2px);
+          border-color: #d4af37;
+        }
+
+        .card-head {
+          display: flex;
+          justify-content: space-between;
+          gap: 12px;
+          align-items: flex-start;
+        }
+
+        .service-card h3,
+        .price-card h3 {
+          margin: 0;
+          font-size: 28px;
+          font-weight: 900;
+        }
+
+        .service-card p,
+        .action-card span,
+        .price-card p {
+          margin: 14px 0 0;
+          color: #d1d8e8;
+          line-height: 1.8;
+          font-size: 18px;
+        }
+
+        .badge {
+          display: inline-flex;
+          padding: 7px 10px;
+          border-radius: 999px;
+          border: 1px solid #6a5a1a;
+          background: #0b1730;
+          color: #f4c84d;
+          font-size: 11px;
+          font-weight: 900;
+          text-transform: uppercase;
+          letter-spacing: 0.12em;
+        }
+
+        .open-link {
+          display: inline-block;
+          margin-top: 16px;
+          color: #f4c84d;
+          font-weight: 800;
+        }
+
+        .action-card {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        .action-card strong {
+          font-size: 28px;
+          font-weight: 900;
+        }
+
+        .action-card.primary {
+          background: #d4af37;
+          color: #000;
+          border-color: #d4af37;
+        }
+
+        .action-card.primary span {
+          color: rgba(0, 0, 0, 0.82);
+        }
+
+        .why-list {
+          margin: 0;
+          padding-left: 20px;
+        }
+
+        .why-list li {
+          color: #d1d8e8;
+          line-height: 1.8;
+          font-size: 18px;
+          margin-bottom: 10px;
+        }
+
+        .pricing-panel {
+          margin-top: 24px;
+        }
+
+        .price-card {
+          text-align: center;
+          background: linear-gradient(180deg, #16294b 0%, #0b1833 100%);
+        }
+
+        .price-icon {
+          font-size: 42px;
+        }
+
+        .price {
+          margin-top: 14px;
+          font-size: 58px;
+          font-weight: 900;
+          color: #d4af37;
+        }
+
+        .price-card .btn-outline {
+          margin-top: 20px;
+        }
+
+        @media (max-width: 1200px) {
+          .hero-card,
+          .grid-section,
+          .pricing-grid,
+          .service-grid,
+          .action-grid {
+            grid-template-columns: 1fr;
+          }
+        }
+
+        @media (max-width: 768px) {
+          .res-wrap {
+            padding: 16px;
+          }
+
+          .topbar {
+            flex-direction: column;
+            align-items: stretch;
+          }
+
+          .hero-left h1 {
+            font-size: 42px;
+          }
+
+          .panel h2 {
+            font-size: 32px;
+          }
+
+          .service-card h3,
+          .price-card h3,
+          .action-card strong {
+            font-size: 24px;
+          }
+
+          .price {
+            font-size: 44px;
+          }
+        }
+      `}</style>
+    </>
   );
 }
